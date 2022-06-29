@@ -14,6 +14,27 @@ class App extends React.Component {
     cardTrunfo: false,
   }
 
+  buttonValidation = () => {
+    const { cardAttr1, cardAttr2, cardAttr3 } = this.state;
+    const maxValue = 90;
+    if (cardAttr1 <= maxValue && cardAttr1 >= 0
+    && cardAttr2 <= maxValue && cardAttr2 >= 0
+     && cardAttr3 <= maxValue && cardAttr3 >= 0) {
+      return true;
+    }
+    return false;
+  }
+
+  Values = () => {
+    const { cardAttr1, cardAttr2, cardAttr3 } = this.state;
+    const maxSoma = 210;
+    const soma = maxSoma - cardAttr1 - cardAttr2 - cardAttr3;
+    if (soma >= 0) {
+      return true;
+    }
+    return false;
+  }
+
   onInputChange = ({ target }) => {
     const { name, type } = target;
     const value = type === 'checkbox' ? target.checked : target.value;
