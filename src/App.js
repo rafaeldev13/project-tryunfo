@@ -12,6 +12,7 @@ class App extends React.Component {
     cardImage: '',
     cardRare: '',
     cardTrunfo: false,
+    isSaveButtonDisabled: true,
   }
 
   buttonValidation = () => {
@@ -33,6 +34,16 @@ class App extends React.Component {
       return true;
     }
     return false;
+  }
+
+  buttonDisability = () => {
+    const { cardName, cardDescription, cardImage, cardRare } = this.state;
+    if (cardName && cardDescription && cardImage && cardRare && this.buttonValidation()
+    && this.Values()) {
+      this.state.isSaveButtonDisabled = false;
+    } else {
+      this.state.isSaveButtonDisabled = true;
+    }
   }
 
   onInputChange = ({ target }) => {
@@ -60,6 +71,7 @@ class App extends React.Component {
       <div>
         <h1>Tryunfo</h1>
         <Form
+          isSaveButtonDisabled={ isSaveButtonDisabled }
           onInputChange={ this.onInputChange }
           cardName={ cardName }
           cardDescription={ cardDescription }
