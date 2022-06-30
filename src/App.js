@@ -12,38 +12,6 @@ class App extends React.Component {
     cardImage: '',
     cardRare: '',
     cardTrunfo: false,
-    isSaveButtonDisabled: true,
-  }
-
-  buttonValidation = () => {
-    const { cardAttr1, cardAttr2, cardAttr3 } = this.state;
-    const maxValue = 90;
-    if (cardAttr1 <= maxValue && cardAttr1 >= 0
-    && cardAttr2 <= maxValue && cardAttr2 >= 0
-     && cardAttr3 <= maxValue && cardAttr3 >= 0) {
-      return true;
-    }
-    return false;
-  }
-
-  Values = () => {
-    const { cardAttr1, cardAttr2, cardAttr3 } = this.state;
-    const maxSoma = 210;
-    const soma = maxSoma - cardAttr1 - cardAttr2 - cardAttr3;
-    if (soma >= 0) {
-      return true;
-    }
-    return false;
-  }
-
-  buttonDisability = () => {
-    const { cardName, cardDescription, cardImage, cardRare } = this.state;
-    if (cardName && cardDescription && cardImage && cardRare && this.buttonValidation()
-    && this.Values()) {
-      this.state.isSaveButtonDisabled = false;
-    } else {
-      this.state.isSaveButtonDisabled = true;
-    }
   }
 
   onInputChange = ({ target }) => {
@@ -53,6 +21,34 @@ class App extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  isSaveButtonDisabled = () => {
+    const {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+
+    } = this.state;
+
+    const maxCard = 90;
+    const maxSoma = 210;
+
+    if (cardName.length === 0) { return true; }
+    if (cardDescription.length === 0) { return true; }
+    if (cardImage.length === 0) { return true; }
+    if (cardRare === ' ') { return true; }
+    if (Number(cardAttr1) < 0 || Number(cardAttr1) > maxCard) { return true; }
+    if (Number(cardAttr2) < 0 || Number(cardAttr2) > maxCard) { return true; }
+    if (Number(cardAttr3) < 0 || Number(cardAttr3) > maxCard) { return true; }
+    if (Number(cardAttr1) + Number(cardAttr2) + Number(cardAttr3) > maxSoma) {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -65,13 +61,13 @@ class App extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
+      buttonDisabled,
     } = this.state;
 
     return (
       <div>
         <h1>Tryunfo</h1>
         <Form
-          isSaveButtonDisabled={ isSaveButtonDisabled }
           onInputChange={ this.onInputChange }
           cardName={ cardName }
           cardDescription={ cardDescription }
@@ -81,6 +77,7 @@ class App extends React.Component {
           cardImage={ cardImage }
           cardRare={ cardRare }
           cardTrunfo={ cardTrunfo }
+          isSaveButtonDisabled={ buttonDisabled }
         />
         <Card
           onInputChange={ this.onInputChange }
